@@ -1,23 +1,23 @@
 import axios from "axios";
-import {parseSvg} from "@meta2d/svg";
-import {ElMessage} from "element-plus";
-import {EventAction, PenType} from "@meta2d/core";
-import {useEventbus} from "../hooks/useEventbus.js";
+import { parseSvg } from "@meta2d/svg";
+import { ElMessage } from "element-plus";
+import { EventAction, PenType } from "@meta2d/core";
+import { useEventbus } from "../hooks/useEventbus.js";
 
 
-function getUserDir(path,extend = []) {
+function getUserDir(path, extend = []) {
     return async () => {
-        const {data: fileList} = await axios.get(path)
+        const { data: fileList } = await axios.get(path)
         return fileList.concat(extend)  // 合并路径，方便未来用户自定义扩充路径
     }
 }
 
 export const userPensUrl = {
-    "icon": getUserDir("/icon/",[]),
-    "svg": getUserDir("/svg/",[]),
-    "png": getUserDir("/png/",[]),
-    "path2D": getUserDir("/path2D/",[]),
-    "canvasDraw": getUserDir("/canvasDraw/",[])
+    "icon": getUserDir("/icon/", []),
+    "svg": getUserDir("/svg/", []),
+    "png": getUserDir("/png/", []),
+    "path2D": getUserDir("/path2D/", []),
+    "canvasDraw": getUserDir("/canvasDraw/", [])
 }
 
 
@@ -41,36 +41,36 @@ export const menu = {
             }
         ]
     },
-        {
-            key: "save",
-            name: "保存",
-            icon: "",
-            action: "saveFile"
-        },
-        {
-            key: "magnifier",
-            name: "放大镜",
-            icon: "",
-            action: "openMagnifier"
-        },
-        {
-            key: "map",
-            name: "缩略图",
-            icon: "",
-            action: "openMap"
-        },
-        {
-            key: "pen",
-            name: "钢笔",
-            icon: "",
-            action: "usePen"
-        },
-        {
-            key: "pencil",
-            name: "铅笔",
-            icon: "",
-            action: "usePencil"
-        }],
+    {
+        key: "save",
+        name: "保存",
+        icon: "",
+        action: "saveFile"
+    },
+    {
+        key: "magnifier",
+        name: "放大镜",
+        icon: "",
+        action: "openMagnifier"
+    },
+    {
+        key: "map",
+        name: "缩略图",
+        icon: "",
+        action: "openMap"
+    },
+    {
+        key: "pen",
+        name: "钢笔",
+        icon: "",
+        action: "usePen"
+    },
+    {
+        key: "pencil",
+        name: "铅笔",
+        icon: "",
+        action: "usePencil"
+    }],
     right: [
         {
             key: "undo",
@@ -226,7 +226,7 @@ export const menu = {
             icon: "l-line",
             children: [{
                 name: "直线",
-                icon: " l-line",
+                icon: "l-line",
                 action: "line",
                 value: "line"
             }, {
@@ -312,7 +312,7 @@ const menuFunc = {
     async loadFile() {
         // 该方法有兼容性问题
         const file = await window.showOpenFilePicker().catch(() => {
-            ElMessage({message: '打开文件失败', type: "error"})
+            ElMessage({ message: '打开文件失败', type: "error" })
             return false
         })
         if (file) {
@@ -322,16 +322,16 @@ const menuFunc = {
             if (dataObj.type === 'image/svg+xml') {
                 const pen = parseSvg(data)
                 meta2d.canvas.addCaches = pen
-                ElMessage({message: '添加成功，请点击放置点', type: "success"})
+                ElMessage({ message: '添加成功，请点击放置点', type: "success" })
                 return
             }
-            ElMessage({message: '添加失败，暂且只支持svg文件', type: "error"})
+            ElMessage({ message: '添加失败，暂且只支持svg文件', type: "error" })
         }
     },
     saveFile() {
         const jsonData = window.meta2d.data() // 获取数据 数据怎么来？怎么处理？
         const json = JSON.stringify(jsonData)
-        const file = new Blob([json], {type: "application/json"})
+        const file = new Blob([json], { type: "application/json" })
         const link = URL.createObjectURL(file)
         let a = document.createElement('a')
         a.setAttribute("download", meta2d.fileName || "未命名")
@@ -421,7 +421,7 @@ const menuFunc = {
         a.icon = icon
         meta2d.store.options.drawingLineName = value
         meta2d.canvas.drawingLineName &&
-        (meta2d.canvas.drawingLineName = value);
+            (meta2d.canvas.drawingLineName = value);
         meta2d.store.active?.forEach((pen) => {
             meta2d.updateLineType(pen, value);
         });
@@ -672,11 +672,11 @@ export const eventType = [
         event: "inactive"
     },
     {
-        name:"单击",
-        event:"click"
+        name: "单击",
+        event: "click"
     },
     {
-        name:"双击",
+        name: "双击",
         event: "dbclick"
     }
 ]
@@ -687,122 +687,122 @@ export const eventBehavior = [
     {
         name: "打开链接",
         behavior: EventAction.Link,
-        depend:[
+        depend: [
             {
-                name:"链接地址",
-                type:"input",
-                bindProp:"value",
-                option:{
-                    placeholder:"URL"
+                name: "链接地址",
+                type: "input",
+                bindProp: "value",
+                option: {
+                    placeholder: "URL"
                 },
-                bindData:""
+                bindData: ""
             },
             {
-                name:"打开方式",
-                type:"select",
-                bindProp:"params",
-                option:{
-                    list:[
+                name: "打开方式",
+                type: "select",
+                bindProp: "params",
+                option: {
+                    list: [
                         {
-                            name:"新窗口打开",
-                            value:"_blank"
-                        },{
-                            name:"覆盖当前页面",
-                            value:"self"
+                            name: "新窗口打开",
+                            value: "_blank"
+                        }, {
+                            name: "覆盖当前页面",
+                            value: "self"
                         }
                     ]
                 },
-                bindData:""
+                bindData: ""
             }
         ]
     },
     {
-        name:"执行动画",
+        name: "执行动画",
         behavior: EventAction.StartAnimate,
-        depend:[
+        depend: [
             {
-                name:"目标id/tag",
-                type:"input",
-                bindProp:"value",
-                option:{
-                    placeholder:"id/tag"
+                name: "目标id/tag",
+                type: "input",
+                bindProp: "value",
+                option: {
+                    placeholder: "id/tag"
                 },
-                bindData:""
+                bindData: ""
             },
         ]
     },
     {
-        name:"暂停动画",
+        name: "暂停动画",
         behavior: EventAction.PauseAnimate,
-        depend:[
+        depend: [
             {
-                name:"目标id/tag",
-                type:"input",
-                bindProp:"value",
-                option:{
-                    placeholder:"id/tag"
+                name: "目标id/tag",
+                type: "input",
+                bindProp: "value",
+                option: {
+                    placeholder: "id/tag"
                 },
-                bindData:""
+                bindData: ""
             },
         ]
     },
     {
-        name:"停止动画",
+        name: "停止动画",
         behavior: EventAction.StopAnimate,
-        depend:[
+        depend: [
             {
-                name:"目标id/tag",
-                type:"input",
-                bindProp:"value",
-                option:{
-                    placeholder:"id/tag"
+                name: "目标id/tag",
+                type: "input",
+                bindProp: "value",
+                option: {
+                    placeholder: "id/tag"
                 },
-                bindData:""
+                bindData: ""
             },
         ]
     },
     {
-        name:"播放视频",
+        name: "播放视频",
         behavior: EventAction.StartVideo,
-        depend:[
+        depend: [
             {
-                name:"目标id/tag",
-                type:"input",
-                bindProp:"value",
-                option:{
-                    placeholder:"id/tag"
+                name: "目标id/tag",
+                type: "input",
+                bindProp: "value",
+                option: {
+                    placeholder: "id/tag"
                 },
-                bindData:""
+                bindData: ""
             },
         ]
     },
     {
-        name:"暂停视频",
+        name: "暂停视频",
         behavior: EventAction.PauseVideo,
-        depend:[
+        depend: [
             {
-                name:"目标id/tag",
-                type:"input",
-                bindProp:"value",
-                option:{
-                    placeholder:"id/tag"
+                name: "目标id/tag",
+                type: "input",
+                bindProp: "value",
+                option: {
+                    placeholder: "id/tag"
                 },
-                bindData:""
+                bindData: ""
             },
         ]
     },
     {
         name: "停止视频",
         behavior: EventAction.StopVideo,
-        depend:[
+        depend: [
             {
-                name:"目标id/tag",
-                type:"input",
-                bindProp:"value",
-                option:{
-                    placeholder:"id/tag"
+                name: "目标id/tag",
+                type: "input",
+                bindProp: "value",
+                option: {
+                    placeholder: "id/tag"
                 },
-                bindData:""
+                bindData: ""
             },
         ]
     }
@@ -811,32 +811,63 @@ export const eventBehavior = [
 
 export const animateType = [
     {
-        name:"跳动",
-        key:"bounce",
-        frames:[
-            {
-                duration: 300,
-                y:10
-            },
-        ]
-    },
-    {
-        name:"旋转",
-        key:"rotate",
-        frames: [
-            {
-                duration:1000,
-                rotate:360
-            },
-
-        ]
-    },
-    {
-        name:"提示",
-        key:"tip",
+        name: "跳动",
+        key: "bounce",
+        type: "node",
+        duration: 300,
         frames: [{
-            duration:300,
-            scale:1.3
+            duration: 300,
+            y: 10
         }]
+    },
+    {
+        name: "旋转",
+        key: "rotate",
+        type: "node",
+        duration: 1000,
+        frames: [{
+            duration: 1000,
+            rotate: 360
+        }]
+    },
+    {
+        name: "提示",
+        key: "tip",
+        type: "node",
+        duration: 300,
+        frames: [{
+            duration: 300,
+            scale: 1.3
+        }]
+    },
+    {
+        name: "水流",
+        key: "waters",
+        type: "line",
+        lineWidth: 1,
+        animateColor: '#ff0000',
+        lineAnimateType: 0,
+        animateSpan: 1,
+        animateReverse: false
+    },
+    {
+        name: "水珠流动",
+        key: "droplet",
+        type: "line",
+        lineWidth: 1,
+        animateColor: '#ff0000',
+        lineAnimateType: 1,
+        animateSpan: 1,
+        animateReverse: false
+    },
+    {
+        name: "圆点",
+        key: "drop",
+        type: "line",
+        lineWidth: 1,
+        animateColor: '#ff0000',
+        lineAnimateType: 2,
+        animateSpan: 1,
+        animateReverse: false
     }
 ]

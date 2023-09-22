@@ -13,13 +13,10 @@ import Setting from "./Setting.vue";
 </template>
 
 <style scoped>
-
-.main{
-  flex:1;
+.main {
+  flex: 1;
   height: calc(100% - 59px);
   display: flex;
   justify-content: flex-start;
 }
-
-
 </style>

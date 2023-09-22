@@ -1,68 +1,110 @@
 <script setup>
-import {onMounted, ref} from "vue";
+import { onMounted, ref } from "vue";
 import MapProps from "./MapProps/Map.vue";
 import Global from "./MapProps/Global.vue";
 import Appearance from "./PenProps/Appearance.vue";
 import Event from "./PenProps/Event.vue";
 import Animate from "./PenProps/Animate.vue";
-const props = defineProps(['activeType'])
-let activeName1 = ref('map')
-let activeName2 = ref('appearance')
-let activeName3 = ref('appearance')
-let activePen = ref(false)
-let multiPen = ref(false)
-onMounted(()=>{
-  console.log('setting')
+const props = defineProps(["activeType"]);
+let activeName1 = ref("map");
+let activeName2 = ref("appearance");
+let activeName3 = ref("appearance");
+let activePen = ref(false);
+let multiPen = ref(false);
+onMounted(() => {
+  console.log("setting");
   // 监听鼠标点击事件，返回
-  meta2d.on('active',(args)=>{
-    if(args.length >= 1) activePen.value = true
-    if(args.length >1){
-      multiPen.value = true
-    }else {
-      multiPen.value = false
+  meta2d.on("active", (args) => {
+    if (args.length >= 1) activePen.value = true;
+    if (args.length > 1) {
+      multiPen.value = true;
+    } else {
+      multiPen.value = false;
     }
-  })
-  meta2d.on('inactive',()=>{
-    activePen.value = false
-    multiPen.value = false
-  })
-})
+  });
+  meta2d.on("inactive", () => {
+    activePen.value = false;
+    multiPen.value = false;
+  });
+});
 </script>
 
 <template>
 
   <div class="setting">
 
-    <div class="tz_props" v-show="!activePen">
-      <el-tabs v-model="activeName1" class="demo-tabs"  active-name="first">
-        <el-tab-pane label="图纸" name="map" class="tab" >
-         <MapProps></MapProps>
+    <div
+      class="tz_props"
+      v-show="!activePen"
+    >
+      <el-tabs
+        v-model="activeName1"
+        class="demo-tabs"
+        active-name="first"
+      >
+        <el-tab-pane
+          label="图纸"
+          name="map"
+          class="tab"
+        >
+          <MapProps></MapProps>
         </el-tab-pane>
-        <el-tab-pane label="全局配置" name="global" class="tab"><Global></Global></el-tab-pane>
+        <el-tab-pane
+          label="全局配置"
+          name="global"
+          class="tab"
+        >
+          <Global></Global>
+        </el-tab-pane>
       </el-tabs>
     </div>
 
-    <div class="ty_props" v-show="activePen && !multiPen">
-      <el-tabs v-model="activeName2" class="demo-tabs">
-        <el-tab-pane label="外观" name="appearance" >
+    <div
+      class="ty_props"
+      v-show="activePen && !multiPen"
+    >
+      <el-tabs
+        v-model="activeName2"
+        class="demo-tabs"
+      >
+        <el-tab-pane
+          label="外观"
+          name="appearance"
+        >
           <Appearance></Appearance>
         </el-tab-pane>
-        <el-tab-pane label="事件" name="event" >
+        <el-tab-pane
+          label="事件"
+          name="event"
+        >
           <Event></Event>
         </el-tab-pane>
-        <el-tab-pane label="动效" name="animate">
-          <Animate></Animate></el-tab-pane>
+        <el-tab-pane
+          label="动效"
+          name="animate"
+        >
+          <Animate></Animate>
+        </el-tab-pane>
       </el-tabs>
     </div>
 
-    <div class="ty_props" v-show="activePen && multiPen">
-      <el-tabs v-model="activeName3" class="demo-tabs">
-        <el-tab-pane label="外观" name="appearance" >
+    <div
+      class="ty_props"
+      v-show="activePen && multiPen"
+    >
+      <el-tabs
+        v-model="activeName3"
+        class="demo-tabs"
+      >
+        <el-tab-pane
+          label="外观"
+          name="appearance"
+        >
           <Appearance></Appearance>
         </el-tab-pane>
       </el-tabs>
     </div>
-</div>
+  </div>
 </template>
 
 <style scoped>
@@ -74,7 +116,7 @@ onMounted(()=>{
   overflow: auto;
   box-shadow: 0 2px 4px 0 #dad7d7;
 }
-:deep(.el-tabs__header){
+:deep(.el-tabs__header) {
   margin: 0;
 }
 :deep(.el-tabs__content::-webkit-scrollbar) {
@@ -95,23 +137,24 @@ onMounted(()=>{
   border-radius: 10px;
   background: #ffffff;
 }
-.tz_props{
+.tz_props {
   display: flex;
   width: 100%;
 }
-.ty_props{
+.ty_props {
   display: flex;
   width: 100%;
 }
-:deep(.el-tabs__header){
+:deep(.el-tabs__header) {
   height: 40px;
 }
-:deep(.el-tabs__content){
+:deep(.el-tabs__content) {
   flex: 1;
   overflow: auto;
-}:deep(.el-tabs){
+}
+:deep(.el-tabs) {
   display: flex;
   flex-direction: column;
   width: 100%;
- }
+}
 </style>
